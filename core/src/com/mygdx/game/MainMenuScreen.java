@@ -7,18 +7,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
 public class MainMenuScreen  implements Screen, InputProcessor {
     GameClass game;
     OrthographicCamera camera;
-    Texture btnTextures;
-    Stage stage;
-    ImageButton startBtn;
+    Texture btnStartTexture;
+    Texture btnScoreTexture;
     public MainMenuScreen(GameClass gam) {
         this.game = gam;
-        btnTextures = new Texture("Menu/startBtn.png");
+        btnScoreTexture = new Texture("Menu/scoreBtn.png");
+        btnStartTexture = new Texture("Menu/startBtn.png");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
     }
@@ -30,11 +28,12 @@ public class MainMenuScreen  implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0.8f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(btnTextures, 100, 300, 600, 60);
+        game.batch.draw(btnStartTexture, 100, 300, 600, 70);
+        game.batch.draw(btnScoreTexture, 100,200,600,80);
         game.batch.end();
         if (Gdx.input.isTouched()){
             Vector3 touchPos = new Vector3();
@@ -42,6 +41,9 @@ public class MainMenuScreen  implements Screen, InputProcessor {
             camera.unproject(touchPos);
             if (touchPos.x>=150&&touchPos.x<=650&&touchPos.y>=300&&touchPos.y<=400){
                 game.setScreen(new Tetris(game));
+            }
+            else if (touchPos.x>=150&&touchPos.x<=650&&touchPos.y>=200&&touchPos.y<=280){
+                game.setScreen(new ScoreScreen(game));
             }
         }
         camera.update();
