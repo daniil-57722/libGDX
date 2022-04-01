@@ -57,9 +57,9 @@ public class Tetromino {
     }
 
     public void rotate(GameStage gameStage) {
-//        if (this.type == Type.SQUARE) {
-//            return;
-//        }
+        if (this.type == Type.SQUARE) {
+            return;
+        }
         int[][] rotated = new int[][]{
                 new int[]{-relativePositions[0][INDEX_ROW], relativePositions[0][INDEX_COLUMN]},
                 new int[]{-relativePositions[1][INDEX_ROW], relativePositions[1][INDEX_COLUMN]},
@@ -92,21 +92,20 @@ public class Tetromino {
     }
 
     public void render(ShapeRenderer renderer) {
-        renderer.setColor(Color.GREEN);
+        renderer.setColor(0f,0f,0f,1);
         for (int[] block : getBlocks()) {
             Tetris.renderBlock(renderer, block[INDEX_COLUMN], block[INDEX_ROW]);
         }
     }
 
     public void render(ShapeRenderer renderer, int startX, int startY, int boxSize) {
-        renderer.setColor(Color.GREEN);
+        renderer.setColor(0f,0f,0f,1);
         int originX = startX + boxSize * 2;
         int originY = startY + boxSize * 2;
         for (int[] block : relativePositionsOriginal) {
             renderer.rect(originX + (block[INDEX_COLUMN] + originDelta[INDEX_COLUMN]) * boxSize,
                     originY + (block[INDEX_ROW] + originDelta[INDEX_ROW]) * boxSize,
-                    boxSize,
-                    boxSize);
+                    boxSize, boxSize);
         }
     }
 
@@ -120,25 +119,25 @@ public class Tetromino {
     }
 
     private enum Type {
-//        // xx
-//        // xo
-//        SQUARE(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{0, 1}, new int[]{-1, 1}}, new float[]{0.f, -1f}),
-//        //  x
-//        // xox
-//        MOUNTAIN(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{1, 0}, new int[]{0, 1}}, new float[]{-0.5f, -1f}),
-//        // x
-//        // xox
-//        MIRROR_L(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{1, 0}, new int[]{-1, 1}}, new float[]{-0.5f, -1f}),
-//        //   x
-//        // xox
-//        L(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{1, 0}, new int[]{1, 1}}, new float[]{-0.5f, -1f}),
-//        // xx
-//        //  ox
-//        Z(new int[][]{new int[]{1, 0}, new int[]{0, 0}, new int[]{0, 1}, new int[]{-1, 1}}, new float[]{-0.5f, -1f}),
-//        //  xx
-//        // xo
-//        S(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{0, 1}, new int[]{1, 1}}, new float[]{-0.5f, -1f}),
-        // xoxx
+        // xx
+        // xo
+        SQUARE(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{0, 1}, new int[]{-1, 1}}, new float[]{0.f, -1f}),
+        //  x
+        // xox
+        MOUNTAIN(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{1, 0}, new int[]{0, 1}}, new float[]{-0.5f, -1f}),
+        // x
+        // xox
+        MIRROR_L(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{1, 0}, new int[]{-1, 1}}, new float[]{-0.5f, -1f}),
+        //   x
+        // xox
+        L(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{1, 0}, new int[]{1, 1}}, new float[]{-0.5f, -1f}),
+        // xx
+        //  ox
+        Z(new int[][]{new int[]{1, 0}, new int[]{0, 0}, new int[]{0, 1}, new int[]{-1, 1}}, new float[]{-0.5f, -1f}),
+        //  xx
+        // xo
+        S(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{0, 1}, new int[]{1, 1}}, new float[]{-0.5f, -1f}),
+         //xoxx
         BAR(new int[][]{new int[]{-1, 0}, new int[]{0, 0}, new int[]{1, 0}, new int[]{2, 0}}, new float[]{-1f, -0.5f});
 
         private int[][] relativePositions;

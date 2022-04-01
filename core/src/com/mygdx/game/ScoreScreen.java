@@ -3,9 +3,13 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
 import java.io.BufferedReader;
@@ -17,8 +21,6 @@ public class ScoreScreen implements Screen {
     GameClass game;
     OrthographicCamera camera;
     Texture btnBackTexture;
-    String scores;
-    String line;
     Preferences preferences;
 
     public ScoreScreen(GameClass game) {
@@ -36,18 +38,23 @@ public class ScoreScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 0.8f);
+        SpriteBatch batch = new SpriteBatch();
+        BitmapFont font = new BitmapFont();
+        Gdx.gl.glClearColor(1, 1, 1, 0.8f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         String scores = preferences.getString("score");
         String names = preferences.getString("name");
-        game.batch.setProjectionMatrix(camera.combined);
-        game.batch.begin();
-        game.batch.draw(btnBackTexture, 50, 100, 200, 60);
-        game.font.draw(game.batch, "Scoreboard", 120, 350);
-        game.font.draw(game.batch, scores,170, 300);
-        game.font.draw(game.batch, names, 20, 300);
 
-        game.batch.end();
+        batch.begin();
+        font.setColor(Color.BLACK);
+        font.draw(batch, "Scoreboard", 200, 760);
+        font.draw(batch, scores,420, 720);
+        font.draw(batch, names, 30, 720);
+        batch.end();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(btnBackTexture, 50, 100, 200, 60);
+        batch.end();
         if (Gdx.input.isTouched()){
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
