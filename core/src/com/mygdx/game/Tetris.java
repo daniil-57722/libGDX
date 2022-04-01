@@ -41,10 +41,10 @@ GameClass game;
   private Tetromino currentTetromino;
   private Tetromino nextTetromino;
   private Stage stage;
-  private SpriteBatch batch; // отрисовщик
-  private ShapeRenderer renderer; //отрисовщик для сложных фигур
+  private SpriteBatch batch;
+  private ShapeRenderer renderer;
   private BitmapFont scoreFont;
-  private GameStage gameStage; // окно в котором падают фигуры
+  private GameStage gameStage;
   private int score;
   private SoftKey lastPressedSoftKey;
   private static final int STAGE_START_X = 25;
