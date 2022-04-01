@@ -19,6 +19,8 @@ public class MainMenuScreen  implements Screen, InputProcessor {
     Texture btnSound;
     Preferences preferences;
     boolean sound;
+    long lastTouch;
+    Texture logo;
 
     public MainMenuScreen(GameClass gam) {
         preferences = Gdx.app.getPreferences("MyPrefs");
@@ -26,6 +28,7 @@ public class MainMenuScreen  implements Screen, InputProcessor {
         this.game = gam;
         btnScoreTexture = new Texture("scoreBtn.png");
         btnStartTexture = new Texture("startBtn.png");
+        logo = new Texture("Tetris.png");
         if(sound){
             btnSound = new Texture("soundOn.png");}
         else{
@@ -43,36 +46,42 @@ public class MainMenuScreen  implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 0.8f);
+        Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
+        game.batch.draw(logo,240, 340, 320, 130);
         game.batch.draw(btnSound, 690, 20, 90,40);
-        game.batch.draw(btnStartTexture, 100, 300, 600, 70);
-        game.batch.draw(btnScoreTexture, 100,200,600,80);
+        game.batch.draw(btnStartTexture, 100, 280, 600, 70);
+        game.batch.draw(btnScoreTexture, 100,180,600,80);
         game.batch.end();
         if (Gdx.input.isTouched()){
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            if (touchPos.x>=150&&touchPos.x<=650&&touchPos.y>=300&&touchPos.y<=400){
+            if (touchPos.x>=150&&touchPos.x<=650&&touchPos.y>=280&&touchPos.y<=380){
                 game.setScreen(new Tetris(game));
             }
-            else if (touchPos.x>=150&&touchPos.x<=650&&touchPos.y>=200&&touchPos.y<=280){
+            else if (touchPos.x>=150&&touchPos.x<=650&&touchPos.y>=180&&touchPos.y<=260){
                 game.setScreen(new ScoreScreen(game));
             }
-            else if (touchPos.x>690&&touchPos.x<=780&&touchPos.y>20&&touchPos.y<60){
+            else if (touchPos.x>690&&touchPos.x<=780&&touchPos.y>20&&touchPos.y<60&&
+                    System.currentTimeMillis()-lastTouch >=300){
                 game.batch.begin();
+                lastTouch = 0;
                 if (sound){
                     preferences.putBoolean("sound", false);
+                    preferences.flush();
                     btnSound = new Texture("soundOff.png");
                     sound = preferences.getBoolean("sound");
                 } else{
                     preferences.putBoolean("sound", true);
+                    preferences.flush();
                     btnSound = new Texture("soundOn.png");
                     sound = preferences.getBoolean("sound");
                 }
+                lastTouch = System.currentTimeMillis();
                 Gdx.gl.glClearColor(1, 1, 1, 0.8f);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 game.batch.draw(btnSound, 700, 500, 90,90);

@@ -60,6 +60,7 @@ GameClass game;
   Texture backToMenu;
   public Tetris(GameClass game) {
     bg = Gdx.audio.newMusic(Gdx.files.internal("bgmusic.mp3"));
+    bg.setLooping(true);
     if (preferences.getBoolean("sound")){
       bg.setVolume(1);}
     else{
@@ -79,7 +80,7 @@ GameClass game;
     batch = new SpriteBatch();
 
     scoreFont = new BitmapFont();
-    scoreFont.setColor(Color.WHITE);
+    scoreFont.setColor(Color.BLACK);
     renderer = new ShapeRenderer();
     fallingSpeed = 4.5f; // blocks per seconds
     gameStage = new GameStage();
@@ -105,12 +106,12 @@ GameClass game;
     registerSoftKeyPressEvent(rightArrow, SoftKey.RIGHT);
     registerSoftKeyPressEvent(circle, SoftKey.ROTATE);
     registerSoftKeyPressEvent(downArrow, SoftKey.DOWN);
-    leftArrow.scaleBy(1.1f);
-    rightArrow.scaleBy(1.1f);
+    leftArrow.scaleBy(0.2f);
+    rightArrow.scaleBy(0.2f);
     circle.scaleBy(1.1f);
-    downArrow.scaleBy(1.1f);
+    downArrow.scaleBy(0.2f);
     leftArrow.setPosition(0, 0);
-    downArrow.setPosition(100, 0);
+    downArrow.setPosition(110, 0);
     rightArrow.setPosition(200, 0);
     circle.setPosition(300, 0);
     backBtn.setPosition(300,90);
@@ -130,11 +131,12 @@ GameClass game;
   @Override
   public void render(float delta) {
 
-    Gdx.gl.glClearColor(1, 1, 1, 1);
+    Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1f);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     if (!isGameGoing) {
       try {
+        bg.stop();
         game.setScreen(new GameOverScreen(game, score));
       } catch (IOException e) {
         e.printStackTrace();

@@ -11,8 +11,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Holds the state of current game stage, i.e., where blocks exist.
@@ -20,6 +18,7 @@ import java.util.Set;
 public class GameStage extends Actor implements Screen {
     public static final int NUM_COLUMNS = 10;
     public static final int NUM_ROWS = 22;
+    int k;
 
     private boolean[][] isFilled = new boolean[NUM_COLUMNS][NUM_ROWS];
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -37,33 +36,47 @@ public class GameStage extends Actor implements Screen {
     /**
      * Set the given blocks on stage.
      */
+    @SuppressWarnings("unchecked")
     public int setBlocks(int[][] blocks) {
             for (int[] block : blocks) {
                 isFilled[block[INDEX_COLUMN]][block[INDEX_ROW]] = true;
             }
 
         // Check if any row is filled
-        ArrayList<Integer> rowsToDelete = new ArrayList<>();
+        ArrayList rowsToDelete = new ArrayList();
 
-            for (int[] block : blocks) {
-                if (isRowFilled(block[INDEX_ROW])) {
-                    rowsToDelete.add(block[INDEX_ROW]);
+        for (int[] block : blocks) {
+            if (isRowFilled(block[INDEX_ROW])) {
+                rowsToDelete.add(block[INDEX_ROW]);
+            }
+        }
+    if (rowsToDelete.isEmpty()) {
+        return 0;
+    }
+    k=0;
+    int delta = 0;
+        int s = rowsToDelete.size();
+        for (int r = 0; r < NUM_ROWS; r++) {
+        if (rowsToDelete.contains(r)){
+            delta++;
+            k = delta;
+        }
+        if (k>1){
+            rowsToDelete.remove(0);
+            r--;
+            k = 0;
+        }
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                if (r + delta >= NUM_ROWS) {
+                    isFilled[c][r] = false;
+                } else {
+                    isFilled[c][r] = isFilled[c][r + delta];
                 }
             }
-        if (rowsToDelete.isEmpty()) {
-            return 0;
-        }
-            int delta = rowsToDelete.size();
-            for (int r = 0; r < NUM_ROWS; r++) {
-                for (int c = 0; c < NUM_COLUMNS; c++) {
-                    if (r + delta >= NUM_ROWS) {
-                        isFilled[c][r] = false;
-                    } else {
-                        isFilled[c][r] = isFilled[c][r + delta];}
 
-            }
-        }
-        return delta;
+    }
+    rowsToDelete.clear();
+    return s;
     }
 
     public boolean isOnGround(int[][] blocks) {
@@ -111,7 +124,7 @@ public class GameStage extends Actor implements Screen {
         shapeRenderer.setColor(Color.GRAY);
         shapeRenderer.rect(1, 1, CELL_SIZE * NUM_COLUMNS, CELL_SIZE * NUM_ROWS);
 
-        shapeRenderer.setColor(Color.LIGHT_GRAY);
+        shapeRenderer.setColor(Color.DARK_GRAY);
         for (int i = 0; i < NUM_COLUMNS; i++) {
             for (int j = 0; j < NUM_ROWS; j++) {
                 if (isFilled[i][j]) {

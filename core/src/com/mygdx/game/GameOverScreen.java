@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -50,17 +51,17 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        SpriteBatch batch = new SpriteBatch();
+        Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 300, 480);
-        game.batch.setProjectionMatrix(camera.combined);
-        game.batch.begin();
+        batch.begin();
         gameoverFont = new BitmapFont();
         gameoverFont.setColor(Color.BLACK);
-        gameoverFont.draw(game.batch, "Game over", 110, 370);
-        gameoverFont.draw(game.batch, "your score: " + score, 105, 350);
-        game.batch.end();
+        gameoverFont.draw(batch, "Game over", 200, 670);
+        gameoverFont.draw(batch, "your score: " + score, 195, 650);
+        batch.end();
 
 
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
